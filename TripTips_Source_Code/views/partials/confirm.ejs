@@ -1,0 +1,68 @@
+<!-- SCRATCHED THIS IDEA -->
+<div class="modal-wrapper">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Confirm Location</h3>
+      <a onclick="toggle_visibility('modal-confirm');"><img src="image/cross.png" alt="Close Screen"></a>
+    </div>
+    <form onsubmit="onSubmit()" id="addform">
+      <div class="modal-content">
+        <div class="confirmLeft">
+          <div class="form-group">
+            <label for="nameConfirm">Name:</label>
+            <input type="text" class="form-control" id="nameConfirm"  value=name disabled>
+          </div>
+          <div class="form-group">
+            <label for="addressConfirm">Address:</label>
+            <input type="text" class="form-control" id="addressConfirm" value=address disabled>
+          </div>
+          <div class="form-group">
+            <label for="priceConfirm">Price Range:</label>
+            <input type="text" class="form-control" id="priceConfirm" value=price disabled>
+          </div>
+          <div class="form-group">
+            <label for="typeConfirm">Location Type:</label>
+            <input type="text" class="form-control" id="typeConfirm" value=type disabled>
+          </div>
+          <div class="form-group">
+              <label for="noteConfirm">Personal Note:</label>
+              <textarea class="form-control" id="noteConfirm" maxlength="255" value=note disabled></textarea>
+          </div>
+        </div>
+
+        <div class="confirmMap">
+            <div id="comfirm-map-container">
+                <div id="map"></div>
+            </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <input id="submitbutton" type="submit" value="Submit" class="btn btn-primary btn-block">
+        <input id="backbutton" type="button" value="Go Back" class="btn btn-primary btn-block" onclick="onBack()">
+      </div>
+
+      </form>
+  </div>
+</div>
+
+    <script type="text/javascript">
+      var name = document.getElementById("name").value;
+      var address = document.getElementById("address").value;
+      var type = document.getElementById("type").value;
+      var price = document.getElementById("price").value;
+      var note = document.getElementById("note").value;
+
+      function onSubmit() {
+        addLocation();
+        toggle_visibility("modal-confirm");
+      }
+
+      function onBack() {
+        toggle_confirm("modal-add");
+      }
+
+      function initMap() {
+
+      }
+    </script>

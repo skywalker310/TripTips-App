@@ -1,0 +1,302 @@
+<!-- Stylesheet File -->
+<link href="./css/dashboard.css" rel="stylesheet">
+<link href="./css/modal.css" rel="stylesheet">
+<link href="./css/header.css" rel="stylesheet">
+
+<!-- Javascript File -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- <script src="./lib/jquery/jquery.min.js"></script>
+<script src="./lib/jquery/jquery-migrate.min.js"></script> -->
+<script src="./lib/easing/easing.min.js"></script>
+<script src="./js/main.js"></script>
+
+<!-- Header -->
+<header>
+  <%- include('./partials/header.ejs'); %>
+</header>
+
+<main id="main" >
+    <!--- left scrollable / right not-scrollable-->
+    <div class="wrap">
+        <div class="left">
+            <div class="row">
+                <div class="col">
+                    <section id="location">
+                        <div class="container-fluid">
+                            <div id="welcome_name"> Welcome <%= name %> </div>
+                            <br>
+                            <div class="section-header">
+                                <h2>Your favorites</h2>
+                                <a onclick="toggle_visibility('modal-add')" class="button_add"><img src="image/plus.png" alt="Add a Location" id="addButton"></a>
+                            </div>
+
+                            <div class="row no-gutters">
+                                <div class="col-lg location-info">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg">
+                                            <div class="container-fluid">
+
+                                                <div id="div_contents"> </div>
+                                                  <!-- Filled by server-->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="row">
+                <div class="col">
+                  <div class="map">
+                      <div id="map-container">
+                          <div id="map">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    <!-- MODAL TEMPLATE-->
+     <div class="modal modal-add" id="modal-add">
+          <%- include('./partials/add.ejs'); %>
+    </div>
+
+    <div class="modal modal-confirm" id="modal-comfirm">
+         <%- include('./partials/confirm.ejs'); %>
+     </div>
+
+     <div class="modal modal-view" id="modal-view">
+          <%- include('./partials/view.ejs'); %>
+    </div>
+
+    <a href="#" class="back-to-top"><i class="fa fa-angle-up"></i></a>
+
+</main>
+
+    <!-- Google Map Functions-->
+    <script type="text/javascript">
+      var user = <%- JSON.stringify(userid) %>;
+
+      function getLocationList() {
+        var user = <%- JSON.stringify(userid) %>;
+        var URL = "./getuserlocations";
+        $.ajax({
+          type: "GET",
+          url : URL,
+          dataType : "text",
+          data : {
+            "userid": user
+          },
+          success : function(msg) {
+            $("#div_contents").html(msg);
+          },
+          error: function(jgXHR, textStatus,errorThrown) {
+            alert("Error: " + textStatus + " " + errorThrown);
+          }
+        });
+      }
+
+      function addLocation() {
+        var name = document.getElementById("name").value;
+        var address = document.getElementById("address").value;
+        var type = document.getElementById("type").value;
+        var price = document.getElementById("price").value;
+        var note = document.getElementById("note").value;
+
+        var URL = "./postuserlocations";
+        $.ajax({
+          type: "GET",
+          url : URL,
+          dataType : "text",
+          data : {
+            "locName": name,
+          	"locAddress": address,
+          	"locType": type,
+          	"locPrice": price,
+          	"locNote": note,
+          	"userid": user
+          },
+          success : function(msg) {
+            //$("#modal-confirm").html(msg);
+            console.log(msg)
+          },
+          error: function(jgXHR, textStatus,errorThrown) {
+            alert("Error: " + textStatus + " " + errorThrown);
+          }
+        });
+      }
+
+      function getLocation(locID) {
+        var URL = "./getLocation";
+        $.ajax({
+          type: "GET",
+          url : URL,
+          dataType : "text",
+          data : {
+            "locID": locID
+          },
+          success : function(msg) {
+            $("#view_contents").html(msg);
+          },
+          error: function(jgXHR, textStatus,errorThrown) {
+            alert("Error: " + textStatus + " " + errorThrown);
+          }
+        });
+      }
+
+      function getCoordinates(locID) {
+        var URL = "./getLocation";
+        $.ajax({
+          type: "GET",
+          url : URL,
+          dataType : "text",
+          data : {
+            "locID": locID
+          },
+          success : function(msg) {
+            $("#view_contents").html(msg);
+          },
+          error: function(jgXHR, textStatus,errorThrown) {
+            alert("Error: " + textStatus + " " + errorThrown);
+          }
+        });
+      }
+
+      function removeLocation(locID) {
+        var URL = "./removeLocation";
+        $.ajax({
+          type: "GET",
+          url : URL,
+          dataType : "text",
+          data : {
+            "locID": locID
+          },
+          success : function(msg) {
+            $("#view_contents").html(msg);
+          },
+          error: function(jgXHR, textStatus,errorThrown) {
+            alert("Error: " + textStatus + " " + errorThrown);
+          }
+        });
+      }
+
+      // Initalize Google Map for all favorite destinations of user on home map.
+      function home_initMap() {
+        const sleep = (milliseconds) => {
+            return new Promise(resolve => setTimeout(resolve, milliseconds))
+        }
+
+        // Wait for modal to load before getting information
+        sleep(25).then(() => {
+            var user = <%- JSON.stringify(userid) %>;
+            var URL = "./getALLCoordinates";
+            $.ajax({
+                type: "GET",
+                url: URL,
+                dataType: "text",
+                data: {
+                    "userID": user
+                },
+                success: function (msg) {  
+                    console.log(msg)
+                    var data = JSON.parse(msg);
+                    var longitude = data[0];
+                    var latitude = data[1];
+
+                    // Center map around USA
+                    var map = new google.maps.Map(document.getElementById('map'), { zoom: 4, center: { lat: 41.850033, lng: -87.6500523 }})
+                    //    document.getElementById('confirm_map'), { zoom: 12, center: location });
+
+
+                    for (var i = 0; i < longitude.length; i++) {
+                        var lng = parseFloat(longitude[i]);
+                        var lat = parseFloat(latitude[i]);
+                        var locOrder = (i + 1).toString();
+
+                        // DEBUG
+                        //console.log(i, lat, lng);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: {
+                                lat: lat,
+                                lng: lng
+                            },
+                            label: {
+                                color: 'white',
+                                fontWeight: 'bold',
+                                text: locOrder
+                            }
+                        });
+                        
+                        google.maps.event.trigger(map, "resize"); 
+                    }
+                },
+                error: function (jgXHR, textStatus, errorThrown) {
+                    alert("Error: " + textStatus + " " + errorThrown);
+                }
+            });
+        }) 
+        }
+
+      //Modal Control
+      function toggle_visibility(modal) {
+        var e = document.getElementById(modal);
+        if(e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+      }
+
+      //Modal Control
+      function toggle_confirm(id) {
+        var add = document.getElementById("modal-add");
+        var confirm = document.getElementById("modal-confirm");
+
+        if (id == "modal-add") {
+          add.style.display = 'block';
+          confirm.style.display = 'none';
+        }
+        else if (id == "modal-confirm") {
+          add.style.display = 'none';
+          confirm.style.display = 'block';
+        }
+        else {
+          add.style.display = 'none';
+          confirm.style.display = 'none';
+        }
+      }
+
+        function viewLocation(modal, locID, locLon, locLat) {
+          getLocation(locID);
+          toggle_visibility("modal-view");
+
+          console.log(locLon)
+          initMap();
+        }
+
+      window.addEventListener('load', function() {
+        const sleep = (milliseconds) => {
+            return new Promise(resolve => setTimeout(resolve, milliseconds))
+        }
+
+        // Wait for newly added/removed items to be settled down before retrieving information.
+        sleep(500).then(() => {
+            getLocationList();
+            home_initMap();
+        });
+      });
+    </script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWDVo9ILOpip9zH6VkNGWUJHE2epFVrE8">
+    </script>

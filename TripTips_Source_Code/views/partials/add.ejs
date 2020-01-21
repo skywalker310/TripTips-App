@@ -1,0 +1,56 @@
+<div class="modal-wrapper">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Add Location</h3>
+      <a onclick="toggle_visibility('modal-add');"><img src="image/cross.png" alt="Close Screen"></a>
+    </div>
+      <form onsubmit="onSubmit()" id="addform">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" required maxlength="255">
+          </div>
+          <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" class="form-control" id="address" required maxlength="50">
+          </div>
+          <div class="form-group">
+            <label for="price">Price Range:</label>
+            <select class="form-control" id="price">
+              <option value="N/A">N/A</option>
+              <option value="$">$</option>
+              <option value="$$">$$</option>
+              <option value="$$$">$$$</option>
+              <option value="$$$$">$$$$</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="type">Location Type:</label>
+            <select class="form-control" id="type">
+              <option value="N/A">N/A</option>
+              <option value="Attraction">Attraction</option>
+              <option value="Resturant">Resturant</option>
+              <option value="Hotel">Hotel</option>
+              <option value="Airport">Airport</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+          <div class="form-group">
+              <label for="note">Personal Note:</label>
+              <textarea class="form-control" id="note" maxlength="255"></textarea>
+          </div>
+          <div class="modal-footer">
+            <input id="submitbutton" type="submit" value="Submit" class="btn btn-primary btn-block">
+          </div>
+      </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+  function onSubmit() {
+    addLocation();
+
+    toggle_confirm("modal-confirm");
+  }
+
+</script>

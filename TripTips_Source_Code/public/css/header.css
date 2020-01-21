@@ -1,0 +1,105 @@
+/*------------------- Header -------------------*/
+.wrapper_header{
+  height: 70px;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 5px;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  left: 0;
+  top: 0;
+  right: 0;
+  transition: all 0.5s;
+  z-index: 999; /* Overlay on top */
+}
+
+form {
+  display: flex;
+  justify-content: flex-start;
+}
+.logo img {
+  padding: 0;
+  margin: 0;
+  max-height: 150px;
+  max-width: 300px;
+}
+
+/*------------------- Navigation Menu --------------*/
+.nav-menu,
+.nav-menu * {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-menu ul {
+  position: absolute;
+  display: none;
+  top: 100%;
+  left: 0;
+  z-index: 997;
+}
+
+.nav-menu li {
+  position: relative;
+  white-space: nowrap;
+}
+
+.nav-menu > li {
+  float: left;
+}
+
+.nav-menu li:hover > ul,
+.nav-menu li.sfHover > ul {
+  display: block;
+}
+
+/* Nav Meu Styling */
+.nav-menu a {
+  padding: 8px;
+  text-decoration: none;
+  display: inline-block;
+  color: rgba(202, 206, 221, 0.904);
+  font-family: "Raleway", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  outline: none;
+}
+
+.nav-menu .menu-active a,
+.nav-menu a:hover {
+  color: #000000;
+}
+
+.nav-menu > li {
+  margin-left: 8px;
+}
+
+.nav-menu > li > a:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #f82249;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out 0s;
+}
+
+.nav-menu a:hover:before,
+.nav-menu li:hover > a:before,
+.nav-menu .menu-active > a:before {
+  visibility: visible;
+  width: 100%;
+}
+
+/*------------------- Mobile response -------------------*/
+@media only screen and (max-width: 600px) {
+
+
+  form {
+    display: none;
+  }
+}
