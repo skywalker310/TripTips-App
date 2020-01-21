@@ -1,5 +1,5 @@
 # CS375 Final Project
-Author: Harry Chong, Willow Livengood, Paras Doshi and Hai Le
+Author: Hai Le, Harry Chong, Willow Livengood and Paras Doshi
 
 [Required]
 Run 'npm install' to install all the dependencies required to run TripTips.
